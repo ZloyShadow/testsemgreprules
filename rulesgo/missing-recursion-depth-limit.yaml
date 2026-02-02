@@ -1,0 +1,14 @@
+rules:
+  - id: missing-recursion-depth-limit
+    patterns:
+      - pattern: |
+          func $FUNC(...) {
+            ...
+            $FUNC(...)
+            ...
+          }
+    message: "Рекурсивная функция без ограничения глубины может привести к переполнению стека (Stack Overflow). Добавьте проверку глубины."
+    languages: [go]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-674: Uncontrolled Recursion"

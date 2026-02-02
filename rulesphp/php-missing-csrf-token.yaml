@@ -1,0 +1,15 @@
+rules:
+  - id: php-missing-csrf-token
+    patterns:
+      - pattern: |
+          <form method="POST">
+    pattern-not:
+      - pattern: |
+          <form method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+    message: "Отсутствует CSRF токен в форме. Добавьте CSRF защиту для предотвращения межсайтовой подделки запросов."
+    languages: [php]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-352: Cross-Site Request Forgery"
+      owasp: "A01:2021 - Broken Access Control"

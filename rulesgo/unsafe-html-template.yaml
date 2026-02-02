@@ -1,0 +1,11 @@
+rules:
+  - id: unsafe-html-template
+    patterns:
+      - pattern: |
+          template.HTML($USER_INPUT)
+    message: "Небезопасное преобразование пользовательского ввода в HTML. Это отключает автоматическое экранирование и может привести к XSS."
+    languages: [go]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-79: Cross-Site Scripting"
+      owasp: "A03:2021 - Injection"

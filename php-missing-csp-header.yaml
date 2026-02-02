@@ -1,0 +1,14 @@
+rules:
+  - id: php-missing-csp-header
+    patterns:
+      - pattern: |
+          <?php
+    pattern-not:
+      - pattern: |
+          header("Content-Security-Policy: default-src 'self'");
+    message: "Отсутствует заголовок Content-Security-Policy. Добавьте CSP для защиты от XSS и других атак."
+    languages: [php]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-693: Protection Mechanism Failure"
+      owasp: "A05:2021 - Security Misconfiguration"

@@ -1,0 +1,14 @@
+rules:
+  - id: potential-redos-pattern
+    patterns:
+      - pattern-either:
+          - pattern: |
+              regexp.MustCompile("(...)*")
+          - pattern: |
+              regexp.MustCompile("(...)+")
+    message: "Потенциальная уязвимость ReDoS (Regular Expression Denial of Service): квантификаторы на группах могут вызвать катастрофический откат."
+    languages: [go]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-400: Uncontrolled Resource Consumption"
+      owasp: "A05:2021 - Security Misconfiguration"

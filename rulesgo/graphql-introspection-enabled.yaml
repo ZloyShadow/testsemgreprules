@@ -1,0 +1,19 @@
+rules:
+  - id: graphql-introspection-enabled
+    patterns:
+      - pattern: |
+          graphql.NewSchema(graphql.SchemaConfig{
+            ...
+          })
+    pattern-not:
+      - pattern: |
+          graphql.NewSchema(graphql.SchemaConfig{
+            DisableIntrospection: true,
+            ...
+          })
+    message: "GraphQL интроспекция включена - это может привести к утечке информации о схеме. Отключите интроспекцию в продакшене."
+    languages: [go]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-200: Exposure of Sensitive Information to an Unauthorized Actor"
+      owasp: "A05:2021 - Security Misconfiguration"

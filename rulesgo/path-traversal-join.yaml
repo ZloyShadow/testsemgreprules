@@ -1,0 +1,18 @@
+rules:
+  - id: path-traversal-join
+    patterns:
+      - pattern: |
+          filepath.Join($BASE_PATH, $USER_INPUT)
+    pattern-not:
+      - pattern: |
+          cleanPath := filepath.Clean($USER_INPUT)
+          if !strings.HasPrefix(cleanPath, $BASE_PATH) {
+            return fmt.Errorf("invalid path")
+          }
+          filepath.Join($BASE_PATH, cleanPath)
+    message: "Возможна атака Path Traversal: пользовательский ввод используется в пути к файлу без должной санитизации."
+    languages: [go]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-22: Improper Limitation of a Pathname to a Restricted Directory"
+      owasp: "A01:2021 - Broken Access Control"

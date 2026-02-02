@@ -1,0 +1,16 @@
+rules:
+  - id: php-insecure-session-settings
+    patterns:
+      - pattern: |
+          session_start();
+    pattern-not:
+      - pattern: |
+          ini_set('session.cookie_httponly', 1);
+          ini_set('session.cookie_secure', 1);
+          ini_set('session.cookie_samesite', 'Strict');
+          session_start();
+    message: "Небезопасные настройки сессий: отсутствуют флаги HttpOnly, Secure и SameSite. Настройте сессии для защиты от атак."
+    languages: [php]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-614: Sensitive Cookie in HTTPS Session Without 'Secure' Attribute"

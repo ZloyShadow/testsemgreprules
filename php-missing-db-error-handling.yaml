@@ -1,0 +1,17 @@
+rules:
+  - id: php-missing-db-error-handling
+    patterns:
+      - pattern: |
+          mysqli_query($conn, $query)
+    pattern-not:
+      - pattern: |
+          $result = mysqli_query($conn, $query);
+          if (!$result) {
+            error_log(mysqli_error($conn));
+            die("Database error");
+          }
+    message: "Отсутствует обработка ошибок базы данных. Это может привести к утечке информации о структуре БД."
+    languages: [php]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-209: Generation of Error Message Containing Sensitive Information"

@@ -1,0 +1,18 @@
+rules:
+  - id: php-unsafe-file-upload
+    patterns:
+      - pattern: |
+          move_uploaded_file($_FILES['file']['tmp_name'], $destination)
+    pattern-not:
+      - pattern: |
+          $allowed_types = ['image/jpeg', 'image/png'];
+          if (!in_array($_FILES['file']['type'], $allowed_types)) {
+            die('Invalid file type');
+          }
+          move_uploaded_file($_FILES['file']['tmp_name'], $destination)
+    message: "Небезопасная загрузка файлов: отсутствует проверка типа файла. Валидируйте тип и размер загружаемых файлов."
+    languages: [php]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-434: Unrestricted Upload of File with Dangerous Type"
+      owasp: "A01:2021 - Broken Access Control"

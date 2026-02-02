@@ -1,0 +1,13 @@
+rules:
+  - id: php-mysql-query-unsafe
+    patterns:
+      - pattern: |
+          mysql_query($QUERY)
+    pattern-not:
+      - pattern: |
+          mysql_query(mysql_real_escape_string($QUERY))
+    message: "Небезопасное использование mysql_query: отсутствует экранирование. Используйте mysqli или PDO с подготовленными запросами."
+    languages: [php]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-89: SQL Injection"

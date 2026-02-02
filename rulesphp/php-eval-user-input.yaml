@@ -1,0 +1,11 @@
+rules:
+  - id: php-eval-user-input
+    patterns:
+      - pattern: |
+          eval($user_input);
+    message: "КРИТИЧЕСКАЯ УЯЗВИМОСТЬ: выполнение пользовательского ввода через eval(). Это позволяет выполнить произвольный код на сервере."
+    languages: [php]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-95: Improper Neutralization of Directives in Dynamically Evaluated Code"
+      owasp: "A03:2021 - Injection"

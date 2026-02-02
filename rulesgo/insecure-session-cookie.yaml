@@ -1,0 +1,15 @@
+rules:
+  - id: insecure-session-cookie
+    patterns:
+      - pattern: |
+          sessions.NewCookieStore($KEYS...)
+    pattern-not:
+      - pattern: |
+          store := sessions.NewCookieStore($KEYS...)
+          store.Options.SameSite = http.SameSiteStrictMode
+    message: "Отсутствует настройка SameSite для сессионных cookies. Установите SameSite=Strict для защиты от CSRF."
+    languages: [go]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-352: Cross-Site Request Forgery"
+      owasp: "A01:2021 - Broken Access Control"

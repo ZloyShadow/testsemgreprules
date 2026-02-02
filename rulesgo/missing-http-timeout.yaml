@@ -1,0 +1,20 @@
+rules:
+  - id: missing-http-timeout
+    patterns:
+      - pattern: |
+          http.Get($URL)
+    pattern-not:
+      - pattern: |
+          client := &http.Client{
+            Timeout: $TIMEOUT,
+          }
+          client.Get($URL)
+      - pattern: |
+          ctx, cancel := context.WithTimeout(context.Background(), $TIMEOUT)
+          defer cancel()
+          req, _ := http.NewRequestWithContext(ctx, ...)
+    message: "Отсутствует таймаут для HTTP запроса. Это может привести к зависанию приложения при медленных или недоступных сервисах."
+    languages: [go]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-400: Uncontrolled Resource Consumption"

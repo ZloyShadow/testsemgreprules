@@ -1,0 +1,11 @@
+rules:
+  - id: php-unsafe-unserialize
+    patterns:
+      - pattern: |
+          unserialize($user_input)
+    message: "Небезопасная десериализация: unserialize() с пользовательским вводом может привести к выполнению произвольного кода. Используйте json_decode()."
+    languages: [php]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-502: Deserialization of Untrusted Data"
+      owasp: "A08:2021 - Software and Data Integrity Failures"

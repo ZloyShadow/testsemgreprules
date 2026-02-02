@@ -1,0 +1,26 @@
+rules:
+  - id: missing-referer-check
+    patterns:
+      - pattern: |
+          http.HandleFunc("/admin/", func(w http.ResponseWriter, r *http.Request) {
+            if r.Method == "POST" {
+              ...
+            }
+          })
+    pattern-not:
+      - pattern: |
+          http.HandleFunc("/admin/", func(w http.ResponseWriter, r *http.Request) {
+            referer := r.Header.Get("Referer")
+            if !strings.HasPrefix(referer, $ALLOWED_ORIGIN) {
+              http.Error(w, "Invalid Referer", http.StatusForbidden)
+              return
+            }
+            if r.Method == "POST" {
+              ...
+            }
+          })
+    message: "Отсутствует проверка заголовка Referer для критических операций. Рассмотрите возможность добавления этой проверки."
+    languages: [go]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-352: Cross-Site Request Forgery"

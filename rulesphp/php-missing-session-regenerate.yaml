@@ -1,0 +1,15 @@
+rules:
+  - id: php-missing-session-regenerate
+    patterns:
+      - pattern: |
+          $_SESSION['user_id'] = $user_id;
+    pattern-not:
+      - pattern: |
+          session_regenerate_id(true);
+          $_SESSION['user_id'] = $user_id;
+    message: "Отсутствует регенерация session ID после аутентификации. Это делает приложение уязвимым к атакам 'Session Fixation'."
+    languages: [php]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-384: Session Fixation"
+      owasp: "A07:2021 - Identification and Authentication Failures"

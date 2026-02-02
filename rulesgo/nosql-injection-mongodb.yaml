@@ -1,0 +1,20 @@
+rules:
+  - id: nosql-injection-mongodb
+    patterns:
+      - pattern: |
+          bson.M{
+            $KEY: $USER_INPUT,
+            ...
+          }
+    pattern-not:
+      - pattern: |
+          bson.M{
+            $KEY: sanitizeInput($USER_INPUT),
+            ...
+          }
+    message: "Возможная NoSQL Injection: пользовательский ввод используется напрямую в MongoDB запросе. Валидируйте и санитизируйте входные данные."
+    languages: [go]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-943: Improper Neutralization of Special Elements in Data Query Logic"
+      owasp: "A03:2021 - Injection"

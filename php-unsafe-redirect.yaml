@@ -1,0 +1,11 @@
+rules:
+  - id: php-unsafe-redirect
+    patterns:
+      - pattern: |
+          header("Location: " . $user_input);
+    message: "Небезопасное перенаправление: пользовательский ввод используется в заголовке Location без валидации. Возможна атака 'Open Redirect'."
+    languages: [php]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-601: URL Redirection to Untrusted Site"
+      owasp: "A01:2021 - Broken Access Control"

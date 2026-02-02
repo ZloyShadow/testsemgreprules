@@ -1,0 +1,23 @@
+rules:
+  - id: php-command-injection
+    patterns:
+      - pattern-either:
+          - pattern: |
+              exec($user_input);
+          - pattern: |
+              system($user_input);
+          - pattern: |
+              shell_exec($user_input);
+          - pattern: |
+              passthru($user_input);
+    pattern-not:
+      - pattern: |
+          escapeshellarg($user_input)
+      - pattern: |
+          escapeshellcmd($user_input)
+    message: "Command Injection: пользовательский ввод передается напрямую в системную команду. Используйте escapeshellarg() или escapeshellcmd()."
+    languages: [php]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-78: Improper Neutralization of Special Elements used in an OS Command"
+      owasp: "A03:2021 - Injection"

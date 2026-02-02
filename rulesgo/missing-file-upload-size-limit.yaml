@@ -1,0 +1,14 @@
+rules:
+  - id: missing-file-upload-size-limit
+    patterns:
+      - pattern: |
+          http.MaxBytesReader($WRITER, $READER, ...)
+    pattern-not:
+      - pattern: |
+          http.MaxBytesReader($WRITER, $READER, $MAX_SIZE)
+    message: "Отсутствует ограничение размера загружаемых файлов. Это может привести к DoS атаке."
+    languages: [go]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-400: Uncontrolled Resource Consumption"
+      owasp: "A05:2021 - Security Misconfiguration"

@@ -1,0 +1,11 @@
+rules:
+  - id: command-injection-exec
+    patterns:
+      - pattern: |
+          exec.Command($CMD, $USER_INPUT...)
+    message: "Возможная атака Command Injection: пользовательский ввод передается напрямую в команду. Валидируйте входные данные."
+    languages: [go]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-78: Improper Neutralization of Special Elements used in an OS Command"
+      owasp: "A03:2021 - Injection"

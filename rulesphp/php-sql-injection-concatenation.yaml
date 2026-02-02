@@ -1,0 +1,16 @@
+rules:
+  - id: php-sql-injection-concatenation
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $query = "SELECT * FROM $table WHERE id = " . $user_input;
+          - pattern: |
+              $query = "SELECT * FROM $table WHERE id = $user_input";
+          - pattern: |
+              $query = "SELECT * FROM $table WHERE id = {$user_input}";
+    message: "SQL Injection: конкатенация пользовательского ввода в SQL запрос. Используйте подготовленные запросы (prepared statements)."
+    languages: [php]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-89: SQL Injection"
+      owasp: "A03:2021 - Injection"
