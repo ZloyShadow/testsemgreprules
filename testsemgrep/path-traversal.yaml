@@ -1,0 +1,26 @@
+rules:
+  - id: path-traversal
+    patterns:
+      - pattern: |
+          os.Open($USER_INPUT)
+    pattern-not:
+      - pattern: |
+          filepath.Clean($USER_INPUT)
+      - pattern: |
+          path.Join($BASE_DIR, $USER_INPUT)
+    message: "Path Traversal: пользовательский ввод используется для открытия файлов без санитизации."
+    languages: [go]
+    severity: ERROR
+    meta
+      cwe: "CWE-22: Improper Limitation of a Pathname to a Restricted Directory"
+      owasp: "A01:2021 - Broken Access Control"
+
+  - id: insecure-file-permissions
+    patterns:
+      - pattern: |
+          os.OpenFile($PATH, $FLAG, 0777)
+    message: "Небезопасные права доступа к файлам: 0777 слишком разрешительные. Используйте 0644 для файлов или 0755 для директорий."
+    languages: [go]
+    severity: WARNING
+    meta
+      cwe: "CWE-732: Incorrect Permission Assignment for Critical Resource"

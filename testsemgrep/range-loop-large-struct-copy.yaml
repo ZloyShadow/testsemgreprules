@@ -1,0 +1,20 @@
+rules:
+  - id: range-loop-large-struct-copy
+    patterns:
+      - pattern: |
+          for _, $v := range $x {
+            ...
+          }
+    metavariable-pattern:
+      metavariable: $v
+      pattern: |
+        type $T struct {
+          ...
+        }
+    # Heuristic: structs with many fields likely expensive to copy
+    pattern-where:
+      - metavariable: $v
+        count-fields: ">= 5"
+    message: "Range loop copies struct value on each iteration. Consider using pointer (&$v) or index access ($x[$i]) for large structs"
+    languages: [go]
+    severity: WARNING

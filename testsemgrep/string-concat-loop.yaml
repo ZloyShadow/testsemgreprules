@@ -1,0 +1,16 @@
+rules:
+  - id: string-concat-loop
+    patterns:
+      - pattern: |
+          $s := ""
+          for ... {
+            $s = $s + ...
+          }
+    pattern-not:
+      - pattern: |
+          $s := strings.Builder{}
+          ...
+          $s.WriteString(...)
+    message: "Inefficient string concatenation in loop - use strings.Builder to avoid O(n²) allocations"
+    languages: [go]
+    severity: WARNING

@@ -1,0 +1,22 @@
+rules:
+  - id: sync-type-copy
+    patterns:
+      - pattern-either:
+          - pattern: |
+              func ($x $TYPE) $METHOD(...) {
+                ...
+              }
+          - pattern: |
+              $x := $y
+              ...
+      - metavariable-regex:
+          metavariable: $TYPE
+          regex: "(Mutex|Once|Cond|RWMutex|WaitGroup|Pool)"
+    pattern-not:
+      - pattern: |
+          func ($x *$TYPE) $METHOD(...) {
+            ...
+          }
+    message: "sync types must not be copied - use pointer receiver or pointer variable to avoid silent bugs"
+    languages: [go]
+    severity: ERROR

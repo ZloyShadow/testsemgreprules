@@ -1,0 +1,33 @@
+rules:
+  - id: sql-injection-format
+    patterns:
+      - pattern-either:
+          - pattern: |
+              db.Query(fmt.Sprintf($QUERY, $ARGS...))
+          - pattern: |
+              db.Exec(fmt.Sprintf($QUERY, $ARGS...))
+          - pattern: |
+              db.QueryRow(fmt.Sprintf($QUERY, $ARGS...))
+    message: "SQL Injection: использование fmt.Sprintf для построения SQL запросов. Используйте параметризованные запросы."
+    languages: [go]
+    severity: ERROR
+    meta
+      cwe: "CWE-89: SQL Injection"
+      owasp: "A03:2021 - Injection"
+      confidence: HIGH
+
+  - id: sql-injection-concatenation
+    patterns:
+      - pattern-either:
+          - pattern: |
+              db.Query($QUERY + $USER_INPUT)
+          - pattern: |
+              db.Exec($QUERY + $USER_INPUT)
+          - pattern: |
+              db.QueryRow($QUERY + $USER_INPUT)
+    message: "SQL Injection: конкатенация пользовательского ввода в SQL запрос. Используйте параметризованные запросы."
+    languages: [go]
+    severity: ERROR
+    meta
+      cwe: "CWE-89: SQL Injection"
+      owasp: "A03:2021 - Injection"

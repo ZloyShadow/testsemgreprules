@@ -1,0 +1,20 @@
+rules:
+  - id: loop-var-goroutine-capture
+    patterns:
+      - pattern-either:
+          - pattern: |
+              for $i, $v := range $x {
+                go func() {
+                  ...$i...
+                  ...$v...
+                }()
+              }
+          - pattern: |
+              for $i := 0; $i < ...; $i++ {
+                go func() {
+                  ...$i...
+                }()
+              }
+    message: "Loop variable captured by goroutine - all goroutines may see the same final value. Pass variable as argument or create local copy"
+    languages: [go]
+    severity: ERROR

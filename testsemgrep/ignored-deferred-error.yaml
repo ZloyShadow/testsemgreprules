@@ -1,0 +1,19 @@
+rules:
+  - id: ignored-deferred-error
+    patterns:
+      - pattern: |
+          defer $x.Close()
+    pattern-not:
+      - pattern: |
+          defer func() {
+            _ = $x.Close()
+          }()
+      - pattern: |
+          defer func() {
+            if err := $x.Close(); err != nil {
+              ...
+            }
+          }()
+    message: "Ignoring error from Close() in defer - errors should be handled or explicitly ignored with '_ = '"
+    languages: [go]
+    severity: WARNING

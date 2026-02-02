@@ -1,0 +1,19 @@
+rules:
+  - id: defer-in-loop
+    patterns:
+      - pattern-either:
+          - pattern: |
+              for ... {
+                ...
+                defer $FUNC(...)
+                ...
+              }
+          - pattern: |
+              for ... := range ... {
+                ...
+                defer $FUNC(...)
+                ...
+              }
+    message: "Avoid defer inside loops - deferred calls won't execute until function returns, causing resource leaks or unexpected behavior"
+    languages: [go]
+    severity: WARNING

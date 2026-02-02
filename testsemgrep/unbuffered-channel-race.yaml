@@ -1,0 +1,17 @@
+rules:
+  - id: unbuffered-channel-race
+    patterns:
+      - pattern: |
+          $ch := make(chan $T)
+          ...
+          go func() {
+            $ch <- ...
+          }()
+          ...
+          <-$ch
+    pattern-not:
+      - pattern: |
+          $ch := make(chan $T, ...)
+    message: "Unbuffered channel in fire-and-forget goroutine may cause deadlock if receiver isn't ready. Consider buffered channel or proper synchronization"
+    languages: [go]
+    severity: WARNING

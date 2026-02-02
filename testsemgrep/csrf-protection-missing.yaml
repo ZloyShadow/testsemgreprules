@@ -1,0 +1,26 @@
+rules:
+  - id: csrf-protection-missing
+    patterns:
+      - pattern: |
+          http.HandleFunc($PATH, func(w http.ResponseWriter, r *http.Request) {
+            if r.Method == "POST" {
+              ...
+            }
+          })
+    pattern-not:
+      - pattern: |
+          http.HandleFunc($PATH, func(w http.ResponseWriter, r *http.Request) {
+            if r.Method == "POST" {
+              if !isValidCSRFToken(r) {
+                http.Error(w, "Invalid CSRF token", http.StatusForbidden)
+                return
+              }
+              ...
+            }
+          })
+    message: "CSRF защита отсутствует: для всех POST запросов требуется проверка CSRF токена."
+    languages: [go]
+    severity: ERROR
+    meta
+      cwe: "CWE-352: Cross-Site Request Forgery"
+      owasp: "A01:2021 - Broken Access Control"

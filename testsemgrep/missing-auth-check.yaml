@@ -1,0 +1,22 @@
+rules:
+  - id: missing-auth-check
+    patterns:
+      - pattern: |
+          http.HandleFunc("/admin/", func(w http.ResponseWriter, r *http.Request) {
+            ...
+          })
+    pattern-not:
+      - pattern: |
+          http.HandleFunc("/admin/", func(w http.ResponseWriter, r *http.Request) {
+            if !isAdmin(r) {
+              http.Error(w, "Forbidden", http.StatusForbidden)
+              return
+            }
+            ...
+          })
+    message: "Отсутствует проверка авторизации: защищенные эндпоинты должны проверять права доступа."
+    languages: [go]
+    severity: ERROR
+    meta
+      cwe: "CWE-862: Missing Authorization"
+      owasp: "A01:2021 - Broken Access Control"

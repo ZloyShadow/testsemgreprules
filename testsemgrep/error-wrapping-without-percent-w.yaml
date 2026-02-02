@@ -1,0 +1,11 @@
+rules:
+  - id: error-wrapping-without-percent-w
+    patterns:
+      - pattern: |
+          return fmt.Errorf("...: %s", $err)
+    pattern-not:
+      - pattern: |
+          return fmt.Errorf("...: %w", $err)
+    message: "Using %s instead of %w for error wrapping breaks errors.Is/As checks. Use %w to preserve error identity"
+    languages: [go]
+    severity: WARNING

@@ -1,0 +1,31 @@
+rules:
+  - id: insecure-deserialization-gob
+    patterns:
+      - pattern: |
+          gob.NewDecoder($READER).Decode(&$DATA)
+    pattern-not:
+      - pattern: |
+          if !isValidData($DATA) {
+            return fmt.Errorf("...")
+          }
+    message: "Небезопасная десериализация: gob.Decode без валидации данных. Проверяйте данные после десериализации."
+    languages: [go]
+    severity: WARNING
+    meta
+      cwe: "CWE-502: Deserialization of Untrusted Data"
+      owasp: "A08:2021 - Software and Data Integrity Failures"
+
+  - id: insecure-deserialization-json
+    patterns:
+      - pattern: |
+          json.Unmarshal($DATA, &$STRUCT)
+    pattern-not:
+      - pattern: |
+          if err := json.Unmarshal($DATA, &$STRUCT); err != nil {
+            ...
+          }
+    message: "Небезопасная десериализация JSON: отсутствует проверка ошибок. Всегда проверяйте ошибки десериализации."
+    languages: [go]
+    severity: WARNING
+    meta
+      cwe: "CWE-502: Deserialization of Untrusted Data"

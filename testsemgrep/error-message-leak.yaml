@@ -1,0 +1,42 @@
+rules:
+  - id: error-message-leak
+    patterns:
+      - pattern: |
+          panic($USER_INPUT)
+    message: "Утечка информации: паника с пользовательским вводом может раскрыть внутренние данные."
+    languages: [go]
+    severity: WARNING
+    meta
+      cwe: "CWE-209: Generation of Error Message Containing Sensitive Information"
+
+  - id: debug-info-production
+    patterns:
+      - pattern: |
+          log.Printf("DEBUG: %v", $DATA)
+    pattern-not:
+      - pattern: |
+          if os.Getenv("DEBUG") == "true" {
+            log.Printf("DEBUG: %v", $DATA)
+          }
+    message: "Утечка информации: отладочные логи без проверки окружения. Используйте флаги окружения."
+    languages: [go]
+    severity: WARNING
+    meta
+      cwe: "CWE-497: Exposure of Sensitive Information to an Unauthorized Actor"
+
+  - id: sensitive-data-in-logs
+    patterns:
+      - pattern-either:
+          - pattern: |
+              log.Printf("Password: %s", $PASSWORD)
+          - pattern: |
+              log.Printf("Token: %s", $TOKEN)
+          - pattern: |
+              log.Printf("API key: %s", $API_KEY)
+          - pattern: |
+              log.Printf("Credit card: %s", $CC)
+    message: "Утечка информации: чувствительные данные в логах. Никогда не логируйте пароли, токены, ключи API."
+    languages: [go]
+    severity: ERROR
+    meta
+      cwe: "CWE-532: Insertion of Sensitive Information Into Log File"

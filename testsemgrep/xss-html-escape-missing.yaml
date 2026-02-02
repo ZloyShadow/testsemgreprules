@@ -1,0 +1,37 @@
+rules:
+  - id: xss-html-escape-missing
+    patterns:
+      - pattern-either:
+          - pattern: |
+              http.ResponseWriter.Write([]byte($USER_INPUT))
+          - pattern: |
+              fmt.Fprintf(http.ResponseWriter, $USER_INPUT)
+          - pattern: |
+              io.WriteString(http.ResponseWriter, $USER_INPUT)
+    pattern-not:
+      - pattern: |
+          template.HTMLEscape($BUF, []byte($USER_INPUT))
+      - pattern: |
+          html.EscapeString($USER_INPUT)
+    message: "XSS: пользовательский ввод выводится без экранирования. Используйте html.EscapeString или шаблоны."
+    languages: [go]
+    severity: ERROR
+    meta
+      cwe: "CWE-79: Cross-Site Scripting"
+      owasp: "A07:2021 - Identification and Authentication Failures"
+
+  - id: xss-template-autoescape-disabled
+    patterns:
+      - pattern: |
+          $TEMPLATE.Funcs(template.FuncMap{
+            ...
+            "safeHTML": func(s string) template.HTML {
+              return template.HTML(s)
+            },
+            ...
+          })
+    message: "XSS: создание функции 'safeHTML' для отключения автоматического экранирования. Это опасно!"
+    languages: [go]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-79: Cross-Site Scripting"

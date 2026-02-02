@@ -1,0 +1,42 @@
+rules:
+  - id: missing-security-headers
+    patterns:
+      - pattern: |
+          func $HANDLER(w http.ResponseWriter, r *http.Request) {
+            ...
+          }
+    pattern-not:
+      - pattern: |
+          func $HANDLER(w http.ResponseWriter, r *http.Request) {
+            w.Header().Set("Content-Security-Policy", ...)
+            ...
+          }
+    message: "Отсутствуют заголовки безопасности: добавьте Content-Security-Policy, X-Frame-Options, X-Content-Type-Options."
+    languages: [go]
+    severity: WARNING
+    meta
+      owasp: "A05:2021 - Security Misconfiguration"
+
+  - id: insecure-cookie
+    patterns:
+      - pattern: |
+          http.SetCookie($WRITER, &http.Cookie{
+            Name: $NAME,
+            Value: $VALUE,
+            ...
+          })
+    pattern-not:
+      - pattern: |
+          http.SetCookie($WRITER, &http.Cookie{
+            Name: $NAME,
+            Value: $VALUE,
+            Secure: true,
+            HttpOnly: true,
+            SameSite: http.SameSiteStrictMode,
+            ...
+          })
+    message: "Небезопасные cookies: используйте Secure=true, HttpOnly=true, SameSite=Strict для защиты от атак."
+    languages: [go]
+    severity: WARNING
+    meta
+      cwe: "CWE-614: Sensitive Cookie in HTTPS Session Without 'Secure' Attribute"
