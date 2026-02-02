@@ -9,9 +9,6 @@ rules:
     message: "Устаревшие криптографические пакеты: избегайте MD5 и SHA1 для криптографических операций."
     languages: [go]
     severity: WARNING
-    meta
-      cwe: "CWE-327: Use of a Broken or Risky Cryptographic Algorithm"
-      owasp: "A02:2021 - Cryptographic Failures"
 
   - id: insecure-random
     patterns:
@@ -25,5 +22,3 @@ rules:
     message: "Небезопасный генератор случайных чисел: для криптографических операций используйте crypto/rand."
     languages: [go]
     severity: WARNING
-    meta
-      cwe: "CWE-338: Use of Cryptographically Weak Pseudo-Random Number Generator"

@@ -17,6 +17,3 @@ rules:
     message: "Отсутствует проверка авторизации: защищенные эндпоинты должны проверять права доступа."
     languages: [go]
     severity: ERROR
-    meta
-      cwe: "CWE-862: Missing Authorization"
-      owasp: "A01:2021 - Broken Access Control"

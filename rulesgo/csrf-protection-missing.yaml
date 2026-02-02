@@ -21,6 +21,3 @@ rules:
     message: "CSRF защита отсутствует: для всех POST запросов требуется проверка CSRF токена."
     languages: [go]
     severity: ERROR
-    meta
-      cwe: "CWE-352: Cross-Site Request Forgery"
-      owasp: "A01:2021 - Broken Access Control"

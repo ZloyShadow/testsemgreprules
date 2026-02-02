@@ -16,9 +16,6 @@ rules:
     message: "XSS: пользовательский ввод выводится без экранирования. Используйте html.EscapeString или шаблоны."
     languages: [go]
     severity: ERROR
-    meta
-      cwe: "CWE-79: Cross-Site Scripting"
-      owasp: "A07:2021 - Identification and Authentication Failures"
 
   - id: xss-template-autoescape-disabled
     patterns:

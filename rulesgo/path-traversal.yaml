@@ -11,9 +11,6 @@ rules:
     message: "Path Traversal: пользовательский ввод используется для открытия файлов без санитизации."
     languages: [go]
     severity: ERROR
-    meta
-      cwe: "CWE-22: Improper Limitation of a Pathname to a Restricted Directory"
-      owasp: "A01:2021 - Broken Access Control"
 
   - id: insecure-file-permissions
     patterns:
@@ -22,5 +19,3 @@ rules:
     message: "Небезопасные права доступа к файлам: 0777 слишком разрешительные. Используйте 0644 для файлов или 0755 для директорий."
     languages: [go]
     severity: WARNING
-    meta
-      cwe: "CWE-732: Incorrect Permission Assignment for Critical Resource"

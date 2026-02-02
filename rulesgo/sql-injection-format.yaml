@@ -28,6 +28,3 @@ rules:
     message: "SQL Injection: конкатенация пользовательского ввода в SQL запрос. Используйте параметризованные запросы."
     languages: [go]
     severity: ERROR
-    meta
-      cwe: "CWE-89: SQL Injection"
-      owasp: "A03:2021 - Injection"

@@ -6,8 +6,6 @@ rules:
     message: "Утечка информации: паника с пользовательским вводом может раскрыть внутренние данные."
     languages: [go]
     severity: WARNING
-    meta
-      cwe: "CWE-209: Generation of Error Message Containing Sensitive Information"
 
   - id: debug-info-production
     patterns:
@@ -21,8 +19,6 @@ rules:
     message: "Утечка информации: отладочные логи без проверки окружения. Используйте флаги окружения."
     languages: [go]
     severity: WARNING
-    meta
-      cwe: "CWE-497: Exposure of Sensitive Information to an Unauthorized Actor"
 
   - id: sensitive-data-in-logs
     patterns:
@@ -38,5 +34,3 @@ rules:
     message: "Утечка информации: чувствительные данные в логах. Никогда не логируйте пароли, токены, ключи API."
     languages: [go]
     severity: ERROR
-    meta
-      cwe: "CWE-532: Insertion of Sensitive Information Into Log File"

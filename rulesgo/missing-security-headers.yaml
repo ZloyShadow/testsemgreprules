@@ -14,8 +14,6 @@ rules:
     message: "Отсутствуют заголовки безопасности: добавьте Content-Security-Policy, X-Frame-Options, X-Content-Type-Options."
     languages: [go]
     severity: WARNING
-    meta
-      owasp: "A05:2021 - Security Misconfiguration"
 
   - id: insecure-cookie
     patterns:
@@ -38,5 +36,3 @@ rules:
     message: "Небезопасные cookies: используйте Secure=true, HttpOnly=true, SameSite=Strict для защиты от атак."
     languages: [go]
     severity: WARNING
-    meta
-      cwe: "CWE-614: Sensitive Cookie in HTTPS Session Without 'Secure' Attribute"
