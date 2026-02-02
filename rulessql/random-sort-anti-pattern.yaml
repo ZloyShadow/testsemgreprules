@@ -1,0 +1,19 @@
+rules:
+  - id: random-sort-anti-pattern
+    patterns:
+      - pattern-either:
+          - pattern: |
+              SELECT * FROM $TABLE
+              ORDER BY RAND()
+              LIMIT $N
+          - pattern: |
+              SELECT * FROM $TABLE
+              ORDER BY RANDOM()
+              LIMIT $N
+          - pattern: |
+              SELECT * FROM $TABLE
+              ORDER BY NEWID()
+              LIMIT $N
+    message: "Антипаттерн 'Случайный выбор': сортировка всей таблицы для получения случайных строк. Это очень неэффективно для больших таблиц."
+    languages: [sql]
+    severity: WARNING

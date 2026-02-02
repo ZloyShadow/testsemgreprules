@@ -1,0 +1,24 @@
+rules:
+  - id: jaywalking-comma-separated-list
+    patterns:
+      - pattern: |
+          CREATE TABLE $TABLE (
+            $ID_COLUMN $ID_TYPE PRIMARY KEY,
+            $LIST_COLUMN VARCHAR($SIZE),
+            ...
+          )
+    pattern-where:
+      - metavariable: $LIST_COLUMN
+        matches: ".*(ids|accounts|tags|users|emails).*"
+    message: "Антипаттерн 'Кривая дорожка': хранение списка значений через запятую в одном столбце. Нарушает нормализацию."
+    languages: [sql]
+    severity: WARNING
+
+  - id: jaywalking-like-comma-list
+    patterns:
+      - pattern: |
+          SELECT * FROM $TABLE
+          WHERE $LIST_COLUMN LIKE '%$VALUE%'
+    message: "Антипаттерн 'Кривая дорожка': поиск по списку через запятую с помощью LIKE. Неэффективно и ненадежно."
+    languages: [sql]
+    severity: WARNING

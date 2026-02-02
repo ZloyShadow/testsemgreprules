@@ -1,0 +1,26 @@
+rules:
+  - id: polymorphic-association-string-type
+    patterns:
+      - pattern: |
+          CREATE TABLE $CHILD_TABLE (
+            $ID_COLUMN $ID_TYPE PRIMARY KEY,
+            $PARENT_TYPE VARCHAR($SIZE),
+            $PARENT_ID $ID_TYPE,
+            ...
+          )
+    message: "Антипаттерн 'Полиморфная связь': использование строки для типа родительской таблицы. Нарушает ссылочную целостность."
+    languages: [sql]
+    severity: WARNING
+ 
+  - id: polymorphic-association-missing-fk
+    patterns:
+      - pattern: |
+          CREATE TABLE Comments (
+            comment_id $ID_TYPE PRIMARY KEY,
+            issue_type VARCHAR($SIZE),
+            issue_id $ID_TYPE NOT NULL,
+            ...
+          )
+    message: "Антипаттерн 'Полиморфная связь': невозможно создать внешний ключ на разные таблицы. Потеря ссылочной целостности."
+    languages: [sql]
+    severity: WARNING

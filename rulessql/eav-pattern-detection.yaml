@@ -1,0 +1,26 @@
+rules:
+  - id: eav-pattern-detection
+    patterns:
+      - pattern: |
+          CREATE TABLE $EAV_TABLE (
+            $ENTITY_ID $ID_TYPE,
+            $ATTRIBUTE_NAME VARCHAR($SIZE),
+            $ATTRIBUTE_VALUE $VALUE_TYPE,
+            ...
+          )
+    message: "Антипаттерн 'Сущность-атрибут-значение (EAV)': анти-нормализованная структура. Может привести к сложным запросам и потере типобезопасности."
+    languages: [sql]
+    severity: WARNING
+
+  - id: eav-query-complexity
+    patterns:
+      - pattern: |
+          SELECT $ENTITY_ID,
+            MAX(CASE WHEN $ATTRIBUTE_NAME = $ATTR1 THEN $ATTRIBUTE_VALUE END) AS $ATTR1,
+            MAX(CASE WHEN $ATTRIBUTE_NAME = $ATTR2 THEN $ATTRIBUTE_VALUE END) AS $ATTR2,
+            MAX(CASE WHEN $ATTRIBUTE_NAME = $ATTR3 THEN $ATTRIBUTE_VALUE END) AS $ATTR3
+          FROM $EAV_TABLE
+          GROUP BY $ENTITY_ID
+    message: "Антипаттерн 'Сущность-атрибут-значение': сложный запрос для 'разворачивания' атрибутов. Это признак анти-нормализованной структуры."
+    languages: [sql]
+    severity: WARNING

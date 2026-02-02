@@ -1,0 +1,21 @@
+rules:
+  - id: floating-point-for-money
+    patterns:
+      - pattern: |
+          CREATE TABLE $TABLE (
+            $ID_COLUMN $ID_TYPE PRIMARY KEY,
+            $AMOUNT_COLUMN FLOAT,
+            ...
+          )
+    message: "Антипаттерн 'Ошибки округления': использование FLOAT для денежных значений. Используйте DECIMAL или NUMERIC для точных вычислений."
+    languages: [sql]
+    severity: ERROR
+ 
+  - id: floating-point-calculation
+    patterns:
+      - pattern: |
+          SELECT SUM($FLOAT_COLUMN) AS total
+          FROM $TABLE
+    message: "Ошибки округления: суммирование значений с плавающей точкой может привести к неточным результатам."
+    languages: [sql]
+    severity: WARNING

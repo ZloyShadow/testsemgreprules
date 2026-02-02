@@ -1,0 +1,20 @@
+rules:
+  - id: poor-mans-search-like
+    patterns:
+      - pattern: |
+          SELECT * FROM $TABLE
+          WHERE $FIELD LIKE '%$SEARCH%'
+    message: "Антипаттерн 'Поисковая система для бедных': использование LIKE для полнотекстового поиска. Рассмотрите использование полнотекстовых индексов (FULLTEXT, tsvector, FTS)."
+    languages: [sql]
+    severity: WARNING
+
+  - id: poor-mans-search-multiple-likes
+    patterns:
+      - pattern: |
+          SELECT * FROM $TABLE
+          WHERE $FIELD1 LIKE '%$SEARCH%'
+          OR $FIELD2 LIKE '%$SEARCH%'
+          OR $FIELD3 LIKE '%$SEARCH%'
+    message: "Антипаттерн 'Поисковая система для бедных': множественные LIKE для поиска. Используйте полнотекстовый поиск для лучшей производительности."
+    languages: [sql]
+    severity: WARNING

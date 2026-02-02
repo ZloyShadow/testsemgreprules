@@ -1,0 +1,28 @@
+rules:
+  - id: foreign-key-checks-disabled
+    patterns:
+      - pattern-either:
+          - pattern: |
+              SET FOREIGN_KEY_CHECKS = 0
+          - pattern: |
+              PRAGMA foreign_keys = OFF
+          - pattern: |
+              SET session_replication_role = 'replica'
+    message: "Антипаттерн 'Дипломатический иммунитет': отключение проверки внешних ключей. Это может привести к нарушению ссылочной целостности."
+    languages: [sql]
+    severity: WARNING
+ 
+  - id: missing-foreign-key-constraint
+    patterns:
+      - pattern: |
+          CREATE TABLE $CHILD_TABLE (
+            $ID_COLUMN $ID_TYPE PRIMARY KEY,
+            $PARENT_ID $ID_TYPE NOT NULL,
+            ...
+          )
+    pattern-not:
+      - pattern: |
+          FOREIGN KEY ($PARENT_ID) REFERENCES $PARENT_TABLE ($PARENT_ID)
+    message: "Отсутствует внешний ключ: столбец $PARENT_ID выглядит как ссылка на родительскую таблицу, но ограничение не определено."
+    languages: [sql]
+    severity: WARNING

@@ -1,0 +1,61 @@
+rules:
+  - id: sql-injection-string-concatenation
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $QUERY = "SELECT * FROM $TABLE WHERE $FIELD = '" + $USER_INPUT + "'"
+          - pattern: |
+              $QUERY = "SELECT * FROM $TABLE WHERE $FIELD = '" + $USER_INPUT + "'"
+          - pattern: |
+              $QUERY = "INSERT INTO $TABLE VALUES ('" + $USER_INPUT + "')"
+          - pattern: |
+              $QUERY = "UPDATE $TABLE SET $FIELD = '" + $USER_INPUT + "'"
+    message: "SQL-инъекция: конкатенация пользовательского ввода в запрос. Используйте параметризованные запросы."
+    languages: [go, python, java, javascript, php, ruby]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-89: SQL Injection"
+      owasp: "A03:2021 - Injection"
+
+  - id: sql-injection-string-interpolation
+    patterns:
+      - pattern-either:
+          - pattern: |
+              f"SELECT * FROM $TABLE WHERE $FIELD = '{$USER_INPUT}'"
+          - pattern: |
+              f"INSERT INTO $TABLE VALUES ('{$USER_INPUT}')"
+          - pattern: |
+              f"UPDATE $TABLE SET $FIELD = '{$USER_INPUT}'"
+          - pattern: |
+              f"DELETE FROM $TABLE WHERE $FIELD = '{$USER_INPUT}'"
+    message: "SQL-инъекция: интерполяция пользовательского ввода в запрос. Используйте параметризованные запросы."
+    languages: [python]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-89: SQL Injection"
+
+  - id: sql-injection-format-string
+    patterns:
+      - pattern-either:
+          - pattern: |
+              "SELECT * FROM $TABLE WHERE $FIELD = '%s'" % $USER_INPUT
+          - pattern: |
+              "SELECT * FROM $TABLE WHERE $FIELD = '{}'".format($USER_INPUT)
+          - pattern: |
+              "SELECT * FROM $TABLE WHERE $FIELD = {0}".format($USER_INPUT)
+    message: "SQL-инъекция: форматирование строк с пользовательским вводом. Используйте параметризованные запросы."
+    languages: [python]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-89: SQL Injection"
+
+  - id: sql-injection-second-order
+    patterns:
+      - pattern: |
+          $VALUE = $DB.execute($QUERY1).fetchone()
+          $QUERY2 = f"SELECT * FROM $TABLE WHERE $FIELD = '{$VALUE}'"
+    message: "SQL-инъекция второго порядка: данные из БД используются в другом запросе без экранирования."
+    languages: [python]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-89: SQL Injection"

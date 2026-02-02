@@ -1,0 +1,24 @@
+rules:
+  - id: fear-of-unknown-null-avoidance
+    patterns:
+      - pattern: |
+          CREATE TABLE $TABLE (
+            $ID_COLUMN $ID_TYPE PRIMARY KEY,
+            $FIELD1 $TYPE1 NOT NULL DEFAULT $DEFAULT1,
+            $FIELD2 $TYPE2 NOT NULL DEFAULT $DEFAULT2,
+            $FIELD3 $TYPE3 NOT NULL DEFAULT $DEFAULT3,
+            ...
+          )
+    message: "Антипаттерн 'Страх неизвестного': избегание NULL с помощью значений-заполнителей. Это может привести к неточным вычислениям."
+    languages: [sql]
+    severity: WARNING
+ 
+  - id: fear-of-unknown-magic-values
+    patterns:
+      - pattern: |
+          SELECT AVG($FIELD)
+          FROM $TABLE
+          WHERE $FIELD != -1
+    message: "Антипаттерн 'Страх неизвестного': использование 'магических' значений вместо NULL. Это усложняет запросы и может привести к ошибкам."
+    languages: [sql]
+    severity: WARNING

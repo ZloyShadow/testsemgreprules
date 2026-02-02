@@ -1,0 +1,25 @@
+rules:
+  - id: ambiguous-group-by
+    patterns:
+      - pattern: |
+          SELECT $FIELD1, MAX($FIELD2)
+          FROM $TABLE
+          GROUP BY $FIELD1
+    pattern-not:
+      - pattern: |
+          SELECT $FIELD1, MAX($FIELD2) AS max_field
+          FROM $TABLE
+          GROUP BY $FIELD1
+    message: "Антипаттерн 'Неоднозначные группы': в SELECT есть столбцы, не входящие в GROUP BY и не использующие агрегатные функции."
+    languages: [sql]
+    severity: ERROR
+
+  - id: ambiguous-group-by-multiple-columns
+    patterns:
+      - pattern: |
+          SELECT $FIELD1, $FIELD2, MAX($FIELD3)
+          FROM $TABLE
+          GROUP BY $FIELD1
+    message: "Антипаттерн 'Неоднозначные группы': столбец $FIELD2 не входит в GROUP BY и не использует агрегатную функцию."
+    languages: [sql]
+    severity: ERROR

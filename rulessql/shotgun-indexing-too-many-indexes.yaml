@@ -1,0 +1,33 @@
+rules:
+  - id: shotgun-indexing-too-many-indexes
+    patterns:
+      - pattern: |
+          CREATE TABLE $TABLE (
+            $ID_COLUMN $ID_TYPE PRIMARY KEY,
+            $FIELD1 $TYPE1,
+            $FIELD2 $TYPE2,
+            $FIELD3 $TYPE3,
+            $FIELD4 $TYPE4,
+            $FIELD5 $TYPE5,
+            ...
+          );
+          CREATE INDEX $IDX1 ON $TABLE ($FIELD1);
+          CREATE INDEX $IDX2 ON $TABLE ($FIELD2);
+          CREATE INDEX $IDX3 ON $TABLE ($FIELD3);
+          CREATE INDEX $IDX4 ON $TABLE ($FIELD4);
+          CREATE INDEX $IDX5 ON $TABLE ($FIELD5);
+    message: "Антипаттерн 'Индексный дробовик': создание индекса для каждого столбца. Это замедляет запись и тратит место на диске."
+    languages: [sql]
+    severity: WARNING
+
+  - id: redundant-primary-key-index
+    patterns:
+      - pattern: |
+          CREATE TABLE $TABLE (
+            $ID_COLUMN $ID_TYPE PRIMARY KEY,
+            ...
+          );
+          CREATE INDEX $IDX ON $TABLE ($ID_COLUMN);
+    message: "Избыточный индекс: первичный ключ уже индексирован. Дополнительный индекс не нужен."
+    languages: [sql]
+    severity: WARNING

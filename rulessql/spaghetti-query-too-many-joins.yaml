@@ -1,0 +1,32 @@
+rules:
+  - id: spaghetti-query-too-many-joins
+    patterns:
+      - pattern: |
+          SELECT ...
+          FROM $TABLE1
+          JOIN $TABLE2 ON ...
+          JOIN $TABLE3 ON ...
+          JOIN $TABLE4 ON ...
+          JOIN $TABLE5 ON ...
+          JOIN $TABLE6 ON ...
+          JOIN $TABLE7 ON ...
+          JOIN $TABLE8 ON ...
+    message: "Антипаттерн 'Спагетти-запросы': слишком много JOIN в одном запросе. Запрос становится сложным для понимания и оптимизации."
+    languages: [sql]
+    severity: WARNING
+ 
+  - id: spaghetti-query-too-many-unions
+    patterns:
+      - pattern: |
+          SELECT ... FROM $TABLE1
+          UNION
+          SELECT ... FROM $TABLE2
+          UNION
+          SELECT ... FROM $TABLE3
+          UNION
+          SELECT ... FROM $TABLE4
+          UNION
+          SELECT ... FROM $TABLE5
+    message: "Антипаттерн 'Спагетти-запросы': слишком много UNION в одном запросе. Рассмотрите альтернативные подходы."
+    languages: [sql]
+    severity: WARNING

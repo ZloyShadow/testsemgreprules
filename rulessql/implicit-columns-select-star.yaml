@@ -1,0 +1,16 @@
+rules:
+  - id: implicit-columns-select-star
+    patterns:
+      - pattern: |
+          SELECT * FROM $TABLE
+    message: "Антипаттерн 'Неявные столбцы': использование SELECT * может привести к проблемам при изменении схемы. Явно перечислите нужные столбцы."
+    languages: [sql]
+    severity: WARNING
+
+  - id: implicit-columns-insert-no-columns
+    patterns:
+      - pattern: |
+          INSERT INTO $TABLE VALUES ($VALUES)
+    message: "Антипаттерн 'Неявные столбцы': вставка без указания столбцов. Если порядок или количество столбцов изменится, запрос сломается."
+    languages: [sql]
+    severity: WARNING
