@@ -1,0 +1,20 @@
+rules:
+  - id: java-equals-called-on-itself
+    patterns:
+      - pattern: |
+          $VAR.equals($VAR)
+    message: "equals() вызывается на самом себе. Это всегда возвращает true и, вероятно, является ошибкой."
+    languages: [java]
+    severity: ERROR
+
+  - id: java-equals-bigdecimal-without-compareto
+    patterns:
+      - pattern: |
+          $BD1.equals($BD2)
+    metavariable-pattern:
+      metavariable: $BD1
+      pattern: |
+          BigDecimal $BD1 = ...;
+    message: "equals() для BigDecimal сравнивает и значение, и масштаб (2.0 != 2.00). Для сравнения значений используйте compareTo(): $BD1.compareTo($BD2) == 0"
+    languages: [java]
+    severity: WARNING

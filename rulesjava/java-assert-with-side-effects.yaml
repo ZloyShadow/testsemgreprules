@@ -1,0 +1,16 @@
+rules:
+  - id: java-assert-with-side-effects
+    patterns:
+      - pattern: |
+          assert $METHOD_WITH_SIDE_EFFECTS();
+    message: "Ассерт с побочными эффектами: ассерты могут быть отключены в продакшене, что приведёт к пропуску побочных эффектов. Переместите вызов метода перед ассертом."
+    languages: [java]
+    severity: ERROR
+
+  - id: java-assert-not-enabled
+    patterns:
+      - pattern: |
+          assert $CONDITION : $MESSAGE;
+    message: "Ассерты отключены по умолчанию в JVM. Убедитесь, что они включены с помощью флага -ea при тестировании."
+    languages: [java]
+    severity: WARNING

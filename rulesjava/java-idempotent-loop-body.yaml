@@ -1,0 +1,10 @@
+rules:
+  - id: java-idempotent-loop-body
+    patterns:
+      - pattern: |
+          for (int $I = 0; $I < $LIMIT; $I++) {
+            $VAR = $EXPR;
+          }
+    message: "Идемпотентное тело цикла: переменная $VAR перезаписывается в каждой итерации. Возможно, вы хотели использовать $VAR += $EXPR или индексированный доступ."
+    languages: [java]
+    severity: WARNING

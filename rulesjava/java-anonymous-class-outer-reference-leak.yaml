@@ -1,0 +1,18 @@
+rules:
+  - id: java-anonymous-class-outer-reference-leak
+    patterns:
+      - pattern: |
+          public class $CLASS {
+            private final $TYPE $FIELD;
+            
+            public $TYPE getCallback() {
+              return new $INTERFACE() {
+                public void $METHOD() {
+                  // Использует $FIELD
+                }
+              };
+            }
+          }
+    message: "Анонимный класс захватывает ссылку на внешний класс, что может привести к утечке памяти. Рассмотрите использование статического вложенного класса или лямбды."
+    languages: [java]
+    severity: WARNING

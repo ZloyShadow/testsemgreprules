@@ -1,0 +1,16 @@
+rules:
+  - id: java-abs-integer-min-value
+    patterns:
+      - pattern: |
+          Math.abs($VALUE)
+    message: "Math.abs(Integer.MIN_VALUE) возвращает отрицательное значение. Это может привести к ошибкам. Рассмотрите использование Math.absExact() (Java 15+)."
+    languages: [java]
+    severity: WARNING
+
+  - id: java-math-round-vs-floor
+    patterns:
+      - pattern: |
+          (int) Math.floor($VALUE + 0.5)
+    message: "Ручное округление может быть заменено на Math.round($VALUE). Это более читаемо и менее подвержено ошибкам."
+    languages: [java]
+    severity: WARNING

@@ -1,0 +1,20 @@
+rules:
+  - id: java-average-calculation-overflow
+    patterns:
+      - pattern: |
+          int $AVG = ($A + $B) / 2;
+    message: "Переполнение при вычислении среднего: ($A + $B) может переполниться, даже если результат помещается в int. Используйте: $A + ($B - $A) / 2 или ($A + $B) >>> 1"
+    languages: [java]
+    severity: WARNING
+
+  - id: java-average-calculation-long-overflow
+    patterns:
+      - pattern: |
+          long $AVG = ($A + $B) / 2;
+    metavariable-pattern:
+      metavariable: $A
+      pattern: |
+          long $A = ...;
+    message: "Переполнение при вычислении среднего для long: нет примитивного типа больше long. Используйте: $A + ($B - $A) / 2 или BigInteger."
+    languages: [java]
+    severity: WARNING

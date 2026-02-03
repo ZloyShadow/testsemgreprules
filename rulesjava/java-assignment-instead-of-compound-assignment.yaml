@@ -1,0 +1,16 @@
+rules:
+  - id: java-assignment-instead-of-compound-assignment
+    patterns:
+      - pattern: |
+          $X =- $Y;
+    message: "Возможно, вы хотели использовать -= вместо =-. Это присваивает $X значение -$Y."
+    languages: [java]
+    severity: ERROR
+
+  - id: java-assignment-instead-of-plus-equals
+    patterns:
+      - pattern: |
+          $X =+ $Y;
+    message: "Возможно, вы хотели использовать += вместо =+. Это присваивает $X значение +$Y (эквивалентно $Y)."
+    languages: [java]
+    severity: ERROR

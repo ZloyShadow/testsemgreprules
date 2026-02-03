@@ -1,0 +1,31 @@
+rules:
+  - id: java-switch-fall-through
+    patterns:
+      - pattern: |
+          switch ($VAR) {
+            case $VAL1:
+              ...
+            case $VAL2:
+              ...
+          }
+    pattern-not:
+      - pattern: |
+          switch ($VAR) {
+            case $VAL1:
+              ...
+              break;
+            case $VAL2:
+              ...
+              break;
+          }
+      - pattern: |
+          switch ($VAR) {
+            case $VAL1:
+              ...
+              // fall through
+            case $VAL2:
+              ...
+          }
+    message: "Возможно случайное прохождение (fall-through) в операторе switch. Добавьте break или комментарий // fall through."
+    languages: [java]
+    severity: WARNING

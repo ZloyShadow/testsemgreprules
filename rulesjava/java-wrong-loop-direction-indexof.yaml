@@ -1,0 +1,12 @@
+rules:
+  - id: java-wrong-loop-direction-indexof
+    patterns:
+      - pattern: |
+          int $INDEX = 0;
+          while (($INDEX = $STR.indexOf($SUBSTR, $INDEX)) != -1) {
+            ...
+            $INDEX++;
+          }
+    message: "Неправильное направление цикла: бесконечный цикл, если $SUBSTR является пустой строкой. Добавьте проверку или используйте $INDEX += Math.max(1, $SUBSTR.length())."
+    languages: [java]
+    severity: ERROR

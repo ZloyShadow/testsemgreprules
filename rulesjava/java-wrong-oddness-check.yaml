@@ -1,0 +1,10 @@
+rules:
+  - id: java-wrong-oddness-check
+    patterns:
+      - pattern: |
+          if ($VALUE % 2 == 1) {
+            ...
+          }
+    message: "Неправильная проверка на нечётность: для отрицательных чисел это не работает. Используйте: ($VALUE & 1) != 0 или $VALUE % 2 != 0"
+    languages: [java]
+    severity: WARNING

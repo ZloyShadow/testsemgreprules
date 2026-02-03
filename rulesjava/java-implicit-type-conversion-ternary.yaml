@@ -1,0 +1,8 @@
+rules:
+  - id: java-implicit-type-conversion-ternary
+    patterns:
+      - pattern: |
+          return $CONDITION ? $INT_VALUE : $DOUBLE_VALUE;
+    message: "Неявное преобразование типов в тернарном выражении: результат будет приведён к типу с более высоким приоритетом. Убедитесь, что это ожидаемое поведение."
+    languages: [java]
+    severity: WARNING

@@ -1,0 +1,21 @@
+rules:
+  - id: java-range-loop-copies-large-struct
+    patterns:
+      - pattern: |
+          for ($TYPE $VAR : $COLLECTION) {
+            ...
+          }
+    metavariable-pattern:
+      metavariable: $TYPE
+      pattern: |
+          class $TYPE {
+            $FIELD1;
+            $FIELD2;
+            $FIELD3;
+            $FIELD4;
+            $FIELD5;
+            ...
+          }
+    message: "Цикл for-each копирует большие структуры при каждой итерации. Рассмотрите использование индексного доступа или итератора для больших объектов."
+    languages: [java]
+    severity: WARNING

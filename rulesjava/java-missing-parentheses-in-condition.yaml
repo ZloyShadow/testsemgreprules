@@ -1,0 +1,20 @@
+rules:
+  - id: java-missing-parentheses-in-condition
+    patterns:
+      - pattern: |
+          if (!$OBJ instanceof $TYPE) {
+            ...
+          }
+    message: "Отсутствуют скобки вокруг оператора instanceof. Используйте: if (!($OBJ instanceof $TYPE))"
+    languages: [java]
+    severity: ERROR
+
+  - id: java-assignment-instead-of-comparison
+    patterns:
+      - pattern: |
+          if ($VAR = $VALUE) {
+            ...
+          }
+    message: "Возможно, вы хотели использовать == вместо =. Присваивание в условии if может привести к ошибке."
+    languages: [java]
+    severity: ERROR

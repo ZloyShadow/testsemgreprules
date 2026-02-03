@@ -1,0 +1,27 @@
+rules:
+  - id: java-malformed-if-else-chain
+    patterns:
+      - pattern: |
+          if ($COND1) {
+            ...
+          }
+          if ($COND2) {
+            ...
+          } else {
+            ...
+          }
+    message: "Неправильная цепочка if-else: второе условие проверяется независимо от первого. Возможно, вы хотели использовать else if."
+    languages: [java]
+    severity: WARNING
+
+  - id: java-unreachable-condition-in-chain
+    patterns:
+      - pattern: |
+          if ($COND1) {
+            ...
+          } else if ($COND1) {
+            ...
+          }
+    message: "Недостижимое условие: второе условие идентично первому и никогда не будет выполнено."
+    languages: [java]
+    severity: ERROR

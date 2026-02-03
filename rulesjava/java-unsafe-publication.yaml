@@ -1,0 +1,18 @@
+rules:
+  - id: java-unsafe-publication
+    patterns:
+      - pattern: |
+          public class $CLASS {
+            private $TYPE $FIELD;
+            
+            public $CLASS($TYPE $PARAM) {
+              $FIELD = $PARAM;
+            }
+            
+            public $TYPE get() {
+              return $FIELD;
+            }
+          }
+    message: "Возможна небезопасная публикация: если $CLASS используется в многопоточной среде, другие потоки могут видеть частично инициализированный объект. Рассмотрите использование final или правильной синхронизации."
+    languages: [java]
+    severity: WARNING

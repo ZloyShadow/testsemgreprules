@@ -1,0 +1,20 @@
+rules:
+  - id: java-malformed-for-loop-update
+    patterns:
+      - pattern: |
+          for (int $I = 0; $I < $LIMIT; $I--) {
+            ...
+          }
+    message: "Неправильное направление обновления в цикле for: $I-- вместо $I++. Это может привести к бесконечному циклу."
+    languages: [java]
+    severity: ERROR
+
+  - id: java-for-loop-condition-always-true
+    patterns:
+      - pattern: |
+          for (int $I = 0; $I >= 0; $I++) {
+            ...
+          }
+    message: "Условие цикла всегда истинно (пока не произойдёт переполнение). Это может привести к бесконечному циклу."
+    languages: [java]
+    severity: ERROR

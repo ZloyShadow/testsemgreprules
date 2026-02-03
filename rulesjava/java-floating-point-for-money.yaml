@@ -1,0 +1,22 @@
+rules:
+  - id: java-floating-point-for-money
+    patterns:
+      - pattern-either:
+          - pattern: |
+              float $AMOUNT = ...;
+          - pattern: |
+              double $AMOUNT = ...;
+    pattern-where:
+      - metavariable: $AMOUNT
+        matches: ".*(price|amount|money|balance|salary|cost|fee).*"
+    message: "Использование float/double для денежных значений может привести к ошибкам округления. Используйте BigDecimal или храните в наименьших единицах (центах) как long."
+    languages: [java]
+    severity: ERROR
+
+  - id: java-bigdecimal-constructor-double
+    patterns:
+      - pattern: |
+          new BigDecimal($DOUBLE_VALUE)
+    message: "Создание BigDecimal из double может привести к неожиданным результатам из-за двоичного представления. Используйте: new BigDecimal(\"$VALUE\") или BigDecimal.valueOf($DOUBLE_VALUE)"
+    languages: [java]
+    severity: WARNING

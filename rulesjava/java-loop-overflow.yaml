@@ -1,0 +1,13 @@
+rules:
+  - id: java-loop-overflow
+    patterns:
+      - pattern: |
+          for (int $I = $START; $I <= $END; $I++) {
+            ...
+          }
+    pattern-where:
+      - metavariable: $END
+        matches: "Integer\\.MAX_VALUE"
+    message: "Переполнение цикла: когда $I достигнет Integer.MAX_VALUE, инкремент вызовет переполнение до Integer.MIN_VALUE. Используйте $I < $END вместо $I <= $END."
+    languages: [java]
+    severity: ERROR

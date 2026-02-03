@@ -1,0 +1,23 @@
+rules:
+  - id: java-wrong-operator-precedence-shift
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $LO << 16 + $HI
+          - pattern: |
+              $LO >> 8 + $HI
+          - pattern: |
+              $LO >>> 8 + $HI
+    message: "Ошибка приоритета операторов: сдвиг выполняется после сложения. Используйте скобки: ($LO << 16) + $HI"
+    languages: [java]
+    severity: ERROR
+
+  - id: java-wrong-operator-precedence-bitwise
+    patterns:
+      - pattern: |
+          if ($A & $B == $C) {
+            ...
+          }
+    message: "Ошибка приоритета операторов: оператор == имеет более высокий приоритет, чем &. Используйте скобки: ($A & $B) == $C"
+    languages: [java]
+    severity: ERROR

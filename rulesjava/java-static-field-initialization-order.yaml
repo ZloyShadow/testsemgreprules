@@ -1,0 +1,36 @@
+rules:
+  - id: java-static-field-initialization-order
+    patterns:
+      - pattern: |
+          class $CLASS {
+            static $TYPE1 $FIELD1 = $METHOD($FIELD2);
+            static $TYPE2 $FIELD2 = ...;
+          }
+    message: "Неправильный порядок инициализации статических полей: $FIELD1 использует $FIELD2 до его инициализации. Это может привести к неожиданному поведению."
+    languages: [java]
+    severity: WARNING
+
+  - id: java-subclass-field-access-during-init
+    patterns:
+      - pattern: |
+          class $BASE {
+            $BASE() {
+              $METHOD();
+            }
+            
+            void $METHOD() {
+              // Может быть переопределён
+            }
+          }
+          
+          class $SUB extends $BASE {
+            private $TYPE $FIELD = ...;
+            
+            @Override
+            void $METHOD() {
+              // Использует $FIELD
+            }
+          }
+    message: "Доступ к полям подкласса во время инициализации базового класса. Поле $FIELD ещё не инициализировано, когда вызывается $METHOD()."
+    languages: [java]
+    severity: ERROR

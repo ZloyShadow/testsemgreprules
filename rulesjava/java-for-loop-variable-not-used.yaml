@@ -1,0 +1,17 @@
+rules:
+  - id: java-for-loop-variable-not-used
+    patterns:
+      - pattern: |
+          for (int $I = 0; $I < $LIMIT; $I++) {
+            $METHOD();
+          }
+    pattern-not:
+      - pattern: |
+          for (int $I = 0; $I < $LIMIT; $I++) {
+            $METHOD($I);
+          }
+      - pattern: |
+          IntStream.range(0, $LIMIT).forEach($I -> $METHOD());
+    message: "Переменная цикла $I не используется. Рассмотрите использование IntStream.range() или другую конструкцию."
+    languages: [java]
+    severity: WARNING

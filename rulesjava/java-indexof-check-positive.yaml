@@ -1,0 +1,18 @@
+rules:
+  - id: java-indexof-check-positive
+    patterns:
+      - pattern: |
+          if ($STR.indexOf($SUBSTR) > 0) {
+            ...
+          }
+    message: "Проверка indexOf() > 0 пропускает совпадение в позиции 0. Используйте != -1 или >= 0 для проверки наличия подстроки."
+    languages: [java]
+    severity: WARNING
+
+  - id: java-indexof-arguments-swapped
+    patterns:
+      - pattern: |
+          $STR.indexOf($INDEX, $CHAR)
+    message: "Аргументы indexOf() перепутаны. Правильный порядок: indexOf($CHAR, $INDEX)"
+    languages: [java]
+    severity: ERROR

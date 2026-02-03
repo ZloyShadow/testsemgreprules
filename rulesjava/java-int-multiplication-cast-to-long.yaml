@@ -1,0 +1,20 @@
+rules:
+  - id: java-int-multiplication-cast-to-long
+    patterns:
+      - pattern: |
+          long $RESULT = $INT1 * $INT2;
+    message: "Переполнение при умножении int: сначала выполняется умножение int, затем приведение к long. Используйте: long $RESULT = (long)$INT1 * $INT2;"
+    languages: [java]
+    severity: ERROR
+
+  - id: java-int-multiplication-pass-to-long-param
+    patterns:
+      - pattern: |
+          $METHOD($INT1 * $INT2)
+    metavariable-pattern:
+      metavariable: $METHOD
+      pattern: |
+          void $METHOD(long $PARAM) { ... }
+    message: "Переполнение при умножении int перед передачей в метод long. Используйте: $METHOD((long)$INT1 * $INT2)"
+    languages: [java]
+    severity: ERROR

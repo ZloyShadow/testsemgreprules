@@ -1,0 +1,20 @@
+rules:
+  - id: java-string-comparison-with-equals
+    patterns:
+      - pattern: |
+          if ($STR1 == $STR2) {
+            ...
+          }
+    message: "Сравнение строк с помощью == сравнивает ссылки, а не содержимое. Используйте $STR1.equals($STR2) для сравнения значений."
+    languages: [java]
+    severity: ERROR
+
+  - id: java-string-comparison-null-safety
+    patterns:
+      - pattern: |
+          if ($STR.equals($CONSTANT)) {
+            ...
+          }
+    message: "Сравнение строки с константой может привести к NullPointerException, если строка равна null. Используйте: $CONSTANT.equals($STR)"
+    languages: [java]
+    severity: WARNING

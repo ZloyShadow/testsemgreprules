@@ -1,0 +1,23 @@
+rules:
+  - id: java-integer-division-in-float-context
+    patterns:
+      - pattern: |
+          double $VAR = $INT_VALUE / $INT_DIVISOR;
+    pattern-not:
+      - pattern: |
+          double $VAR = $INT_VALUE / $DOUBLE_DIVISOR;
+      - pattern: |
+          double $VAR = (double) $INT_VALUE / $INT_DIVISOR;
+      - pattern: |
+          double $VAR = $INT_VALUE / 2.0;
+    message: "Целочисленное деление в контексте с плавающей точкой. Результат будет усечён. Используйте: (double)$INT_VALUE / $INT_DIVISOR"
+    languages: [java]
+    severity: WARNING
+
+  - id: java-integer-division-with-var
+    patterns:
+      - pattern: |
+          var $VAR = $INT_VALUE / $INT_DIVISOR;
+    message: "Целочисленное деление с ключевым словом var. Тип будет выведен как int, а не double. Используйте: var $VAR = (double)$INT_VALUE / $INT_DIVISOR"
+    languages: [java]
+    severity: WARNING

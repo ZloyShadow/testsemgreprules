@@ -1,0 +1,16 @@
+rules:
+  - id: java-abs-integer-min-value-result
+    patterns:
+      - pattern: |
+          Math.abs($VALUE) % $MOD
+    message: "Math.abs(Integer.MIN_VALUE) возвращает отрицательное значение (Integer.MIN_VALUE), что может привести к неожиданным результатам при использовании с %. Рассмотрите использование Math.absExact() или проверку на MIN_VALUE."
+    languages: [java]
+    severity: ERROR
+
+  - id: java-random-nextint-abs
+    patterns:
+      - pattern: |
+          Math.abs($RANDOM.nextInt()) % $N
+    message: "Использование Math.abs() с nextInt() может вернуть отрицательное значение (когда nextInt() возвращает Integer.MIN_VALUE). Это приведёт к отрицательному результату."
+    languages: [java]
+    severity: ERROR

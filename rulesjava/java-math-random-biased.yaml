@@ -1,0 +1,16 @@
+rules:
+  - id: java-math-random-biased
+    patterns:
+      - pattern: |
+          int $RAND = (int) (Math.random() * $N);
+    message: "Смещённое распределение при использовании Math.random(). Используйте Random.nextInt($N) для равномерного распределения."
+    languages: [java]
+    severity: WARNING
+
+  - id: java-random-not-thread-safe
+    patterns:
+      - pattern: |
+          private static Random $RANDOM = new Random();
+    message: "Random не является потокобезопасным для многопоточного использования. Рассмотрите ThreadLocalRandom.current() для многопоточных сценариев."
+    languages: [java]
+    severity: WARNING

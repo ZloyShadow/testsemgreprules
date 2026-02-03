@@ -1,0 +1,14 @@
+rules:
+  - id: java-condition-dominated-by-previous
+    patterns:
+      - pattern: |
+          if ($I % 3 == 0) {
+            ...
+          } else if ($I % 5 == 0) {
+            ...
+          } else if ($I % 15 == 0) {
+            ...
+          }
+    message: "Условие $I % 15 == 0 недостижимо, так как оно перекрывается предыдущими условиями ($I % 3 == 0 или $I % 5 == 0)."
+    languages: [java]
+    severity: ERROR

@@ -1,0 +1,19 @@
+rules:
+  - id: java-string-format-mismatched-arguments
+    patterns:
+      - pattern: |
+          String.format($FORMAT, $ARGS...)
+    message: "Проверьте, что количество аргументов соответствует спецификаторам формата в строке. Несоответствие приведёт к исключению."
+    languages: [java]
+    severity: ERROR
+
+  - id: java-string-concatenation-inefficient
+    patterns:
+      - pattern: |
+          String $RESULT = "";
+          for ($TYPE $VAR : $COLLECTION) {
+            $RESULT = $RESULT + $VAR;
+          }
+    message: "Неэффективная конкатенация строк в цикле. Используйте StringBuilder для лучшей производительности."
+    languages: [java]
+    severity: WARNING
